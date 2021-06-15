@@ -1,0 +1,81 @@
+<configuration>
+    <property>
+        <name>hive.stats.jdbc.timeout</name>
+        <value>30</value>
+    </property>
+    <property>
+        <name>hive.server2.thrift.bind.host</name>
+        <value>hive_server</value>
+    </property>
+    <property>
+        <name>hive.server2.thrift.port</name>
+        <value>10000</value>
+    </property>
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://hive_metastore:9083</value>
+        <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
+    </property>
+    <property>
+        <name>hive.metastore.schema.verification</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>hive.metastore.port</name>
+        <value>9083</value>
+        <description>Hive metastore listener port</description>
+    </property>
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>s3a://storage/warehouse</value>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>org.postgresql.Driver</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:postgresql://metastore_db:5432/metastore</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>metastore</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>metastore1!</value>
+    </property>
+    <property>
+        <name>hive.aux.jars.path</name>
+        <value>/opt/auxjars</value>
+    </property>
+    <property>
+        <name>fs.s3a.access.key</name>
+        <value>${MINIO_ROOT_USER}</value>
+    </property>
+    <property>
+        <name>fs.s3a.secret.key</name>
+        <value>${MINIO_ROOT_PASSWORD}</value>
+    </property>
+    <property>
+        <name>fs.s3a.endpoint</name>
+        <value>http://minio:9000</value>
+    </property>
+    <property>
+        <name>fs.s3a.path.style.access</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hive.server2.webui.host</name>
+        <value>0.0.0.0</value>
+        <description>The host address the HiveServer2 WebUI will listen on</description>
+    </property>
+    <property>
+        <name>hive.server2.webui.port</name>
+        <value>10002</value>
+        <description>The port the HiveServer2 WebUI will listen on. This can beset to 0 or a negative integer to disable the web UI</description>
+    </property>
+</configuration>
