@@ -3,6 +3,8 @@
 /spark/bin/spark-submit --master ${SPARK_MASTER} \
     --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
     --hiveconf hive.server2.authentication=NOSASL \
+    --executor-memory 4G \
+    --total-executor-cores 4 \
     --conf spark.hadoop.fs.s3a.access.key=${MINIO_ACCESS_KEY} \
     --conf spark.hadoop.fs.s3a.secret.key=${MINIO_SECRET_KEY} \
     --conf spark.hadoop.fs.s3a.endpoint=minio:9000 \
