@@ -1,7 +1,7 @@
 #!/bin/bash
 
 /spark/bin/spark-submit --master ${SPARK_MASTER} \
-    --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
+    --class ${SPARK_APPLICATION_MAIN_CLASS} \
     --hiveconf hive.server2.authentication=NOSASL \
     --executor-memory 4G \
     --total-executor-cores 4 \
@@ -12,5 +12,5 @@
     --conf spark.hadoop.fs.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
     --conf spark.sql.warehouse.dir=s3a://storage/warehouse \
     --conf spark.hadoop.fs.s3a.path.style.access=true \
-    --conf spark.hive.metastore.uris=thrift://172.30.0.2:9083 \
+    --conf spark.hive.metastore.uris=thrift://172.30.0.4:9083 \
     /

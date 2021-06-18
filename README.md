@@ -6,6 +6,9 @@ The datalake portion of my opensource ml platform
 
 # Known Issues
 ## Thrift Issues
+
+Thrift runs as a Spark Application that means that it will reserve a portion of the resources on the cluster for itself restricting other applications from using it.
+
 Get the Spark Thrift Server started for odbc connections integrated as part of it
 -- issues with SASL
     -- added hiveconf hive.server2.authentication=NOSASL
@@ -21,10 +24,22 @@ Note that windows has extra thrift sasl issues on top of the ones linux users se
 from pyhive import hive
 
 # run a query with nonsasl
-cursor = hive.connect(host='172.30.0.8', auth='NOSASL').cursor()
+cursor = hive.connect(host='spark-thrift-server', auth='NOSASL').cursor()
 cursor.execute("""SHOW DATABASES""")
 print(cursor.fetchall())
 
 ```
 
+```python
 
+from sqlalchemy import *
+from sqlalchemy.engine import create_engine
+from sqlalchemy.schema import *
+from sqlalchemy import text
+
+engine = create_engine('hive://spark-thrift-server:10000/default?auth=NOSASL')
+result = engine.execute(f'show databases')
+for row in result:
+    print(row)
+
+```

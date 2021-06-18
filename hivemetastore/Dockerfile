@@ -1,5 +1,8 @@
 FROM openjdk:8u242-jre
 
+RUN apt-get update && apt-get -y upgrade && \
+        apt install -y net-tools
+
 WORKDIR /opt
 
 ENV HADOOP_VERSION=3.2.0

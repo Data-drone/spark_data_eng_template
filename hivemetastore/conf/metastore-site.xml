@@ -38,11 +38,11 @@
 
     <property>
         <name>fs.s3a.access.key</name>
-        <value>${MINIO_ACCESS_KEY}</value>
+        <value>AKIAIOSFODNN7EXAMPLE</value>
     </property>
     <property>
         <name>fs.s3a.secret.key</name>
-        <value>${MINIO_SECRET_KEY}</value>
+        <value>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</value>
     </property>
     <property>
         <name>fs.s3a.endpoint</name>
