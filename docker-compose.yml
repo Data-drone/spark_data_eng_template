@@ -21,41 +21,17 @@ services:
   hive_metastore:
     hostname: hive_metastore
     build:
-      context: ./hive
+      context: ./hivemetastore
     depends_on:
       metastore_db:
         condition: service_healthy
     ports:
       - "9083:9083"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    healthcheck:
-      test: [ "CMD-SHELL", "/healthcheck_metastore.sh"]
-      interval: 10s
-      timeout: 5s
-      retries: 5  
-    entrypoint: sh
-    command: -c '/metastore.sh' 
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     networks: 
       - ml_platform      
-  hive_server:
-    hostname: hive_server
-    build:
-      context: ./hive
-    depends_on:
-      metastore_db:
-        condition: service_healthy
-    ports:
-      - "10000:10000"
-      - "10002:10002"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    entrypoint: sh
-    command: -c '/entrypoint.sh'  
-    networks: 
-      - ml_platform
   minio:
     image: minio/minio
     ports:
@@ -63,8 +39,8 @@ services:
     volumes:
       - /mnt/38390e7f-c8b3-4b79-8750-eff41b386f03/ml_platform_data:/data 
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     hostname: minio
     entrypoint: sh
     command: -c 'mkdir -p /data/storage && /usr/bin/minio server /data'  
@@ -79,14 +55,17 @@ services:
     ports:
       - "9080:8080"
       - "7077:7077"
+    links:
+      - hive_metastore
     environment:
       SPARK_LOCAL_IP: "spark-master"
       PYSPARK_PYTHON: /usr/bin/python3
       PYSPARK_DRIVER_PYTHON: /usr/bin/python3
-      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
     networks: 
       - ml_platform
+
   spark-worker-1:
     image: datadrone/spark-worker:3.1.1-hadoop3.2-rapids
   #  build:
@@ -94,6 +73,8 @@ services:
   #    dockerfile: Dockerfile_Worker
     depends_on:
       - spark-master
+    ports:
+      - "4040:4040"
     environment:
       SPARK_MASTER: "spark://spark-master:7077"
       SPARK_WORKER_CORES: 16
@@ -103,8 +84,8 @@ services:
       SPARK_WORKER_OPTS: -Dspark.worker.resource.gpu.amount=2 -Dspark.worker.resource.gpu.discoveryScript=/opt/sparkRapidsPlugin/getGpusResources.sh
       PYSPARK_PYTHON: /usr/bin/python3
       PYSPARK_DRIVER_PYTHON: /usr/bin/python3
-      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
-      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
     ipc: host
     deploy:
       resources:
@@ -113,8 +94,31 @@ services:
           - driver: nvidia
             device_ids: ['0', '1']
             capabilities: [gpu, utility, compute]
+    links:
+        - hive_metastore
     networks:
       - ml_platform
+
+  spark-thrift-server:
+    #image: datadrone/spark-submit:3.1.1-hadoop3.2-rapids
+    build:
+      context: ./spark_thrift_server
+    ports:
+      - "10000:10000"
+    depends_on:
+      - spark-worker-1
+    environment:
+      JAVA_HOME: /usr
+      SPARK_MASTER: spark://spark-master:7077
+      PYSPARK_PYTHON: /usr/bin/python3
+      PYSPARK_DRIVER_PYTHON: /usr/bin/python3
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      SPARK_APPLICATION_MAIN_CLASS: org.apache.spark.sql.hive.thriftserver.HiveThriftServer2
+      SPARK_MASTER_URL: spark://spark-master:7077
+    networks:
+      - ml_platform
+
   spark-notebook:
     image: datadrone/spark_notebook:3.1.1-hadoop3.2
   #  build:
@@ -131,8 +135,11 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
     ipc: host  
+    links:
+        - hive_metastore
     networks:
       - ml_platform
+
 networks:
   ml_platform:
     external: true
