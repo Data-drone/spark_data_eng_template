@@ -2,9 +2,10 @@
 The datalake portion of my opensource ml platform
 
 
-## Todo
+## TODO
 
-# Known Issues
+- Still need to work out why we need to define the ipaddress for HiveMetastore
+
 ## Thrift Issues
 
 Thrift runs as a Spark Application that means that it will reserve a portion of the resources on the cluster for itself restricting other applications from using it.
@@ -43,3 +44,9 @@ for row in result:
     print(row)
 
 ```
+For notebook environments need to:
+
+```bash
+conda install sasl
+```
+in order to make sure that sasl installs correctly
