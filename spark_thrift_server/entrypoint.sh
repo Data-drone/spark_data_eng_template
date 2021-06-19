@@ -5,6 +5,7 @@
     --hiveconf hive.server2.authentication=NOSASL \
     --executor-memory 4G \
     --total-executor-cores 4 \
+    --packages="io.delta:delta-core_2.12:1.0.0,org.apache.hadoop:hadoop-aws:3.2.0" \
     --conf spark.hadoop.fs.s3a.access.key=${MINIO_ACCESS_KEY} \
     --conf spark.hadoop.fs.s3a.secret.key=${MINIO_SECRET_KEY} \
     --conf spark.hadoop.fs.s3a.endpoint=minio:9000 \
