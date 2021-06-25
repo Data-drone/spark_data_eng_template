@@ -5,6 +5,8 @@ The datalake portion of my opensource ml platform
 ## TODO
 
 - Still need to work out why we need to define the ipaddress for HiveMetastore
+- Look into users and permissions
+  -- We created a database/schema using jovyan user a table was then written into it using root user. After that was not able to access the table
 
 ## Thrift Issues
 
