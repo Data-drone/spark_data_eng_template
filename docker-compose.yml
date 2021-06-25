@@ -6,11 +6,11 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${HMS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${HMS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${HMS_POSTGRES_DB}
+      POSTGRES_PORT: ${HMS_POSTGRES_PORT}
+      POSTGRES_HOST: ${HMS_POSTGRES_HOST}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U metastore" ]
       interval: 10s
