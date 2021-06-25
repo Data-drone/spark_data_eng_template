@@ -1,6 +1,7 @@
 # spark_data_eng_template
 The datalake portion of my opensource ml platform
 
+Copy of the `.env.template`, rename to .env and change parameters as required
 
 ## TODO
 
