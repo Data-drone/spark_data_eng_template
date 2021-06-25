@@ -29,6 +29,11 @@ services:
     ports:
       - "9083:9083"
     environment:
+      METASTORE_DB_DB: ${HMS_POSTGRES_DB}
+      METASTORE_DB_HOST: ${HMS_POSTGRES_HOST}
+      METASTORE_DB_PORT: ${HMS_POSTGRES_PORT}
+      METASTORE_DB_USER: ${HMS_POSTGRES_USER}
+      METASTORE_DB_PASS: ${HMS_POSTGRES_PASSWORD}
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     healthcheck:
@@ -121,6 +126,7 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       SPARK_APPLICATION_MAIN_CLASS: org.apache.spark.sql.hive.thriftserver.HiveThriftServer2
+      HIVE_METASTORE_ADDRESS: ${HIVE_METASTORE_ADDRESS}
     networks:
       - ml_platform
 
@@ -147,7 +153,7 @@ services:
 networks:
   ml_platform:
     driver: bridge
-    external: false
-    ipam:
-      config:
-        - subnet: 172.30.0.0/16
+    external: true
+    #ipam:
+    #  config:
+    #    - subnet: 172.30.0.0/16

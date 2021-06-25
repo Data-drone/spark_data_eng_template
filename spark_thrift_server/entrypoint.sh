@@ -15,5 +15,5 @@
     --conf spark.hadoop.fs.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
     --conf spark.sql.warehouse.dir=s3a://storage/warehouse \
     --conf spark.hadoop.fs.s3a.path.style.access=true \
-    --conf spark.hive.metastore.uris=thrift://172.30.0.4:9083 \
+    --conf spark.hive.metastore.uris=thrift://${HIVE_METASTORE_ADDRESS}:9083 \
     /

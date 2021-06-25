@@ -23,26 +23,26 @@
 
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
-        <value>jdbc:postgresql://metastore_db:5432/metastore</value>
+        <value>jdbc:postgresql://${METASTORE_DB_HOST}:${METASTORE_DB_PORT}/${METASTORE_DB_DB}</value>
     </property>
 
     <property>
         <name>javax.jdo.option.ConnectionUserName</name>
-        <value>metastore</value>
+        <value>${METASTORE_DB_USER}</value>
     </property>
 
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
-        <value>metastore1!</value>
+        <value>${METASTORE_DB_PASS}</value>
     </property>
 
     <property>
         <name>fs.s3a.access.key</name>
-        <value>AKIAIOSFODNN7EXAMPLE</value>
+        <value>${MINIO_ROOT_USER}</value>
     </property>
     <property>
         <name>fs.s3a.secret.key</name>
-        <value>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</value>
+        <value>${MINIO_ROOT_PASSWORD}</value>
     </property>
     <property>
         <name>fs.s3a.endpoint</name>

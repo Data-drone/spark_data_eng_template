@@ -1,7 +1,7 @@
 FROM openjdk:8u242-jre
 
 RUN apt-get update && apt-get -y upgrade && \
-        apt install -y net-tools
+        apt install -y net-tools gettext-base
 
 WORKDIR /opt
 
@@ -17,13 +17,19 @@ RUN curl -L https://www-us.apache.org/dist/hive/hive-standalone-metastore-${META
     cp postgresql-42.2.20.jar ${HIVE_HOME}/lib/ && \
     rm -rf  postgresql-42.2.20.jar
 
-COPY conf/metastore-site.xml ${HIVE_HOME}/conf
+COPY conf/metastore-site.xml.j2 ${HIVE_HOME}/conf
+COPY conf/configure.sh ${HIVE_HOME}/conf
+
+RUN chmod u+x ${HIVE_HOME}/conf/configure.sh
+
 COPY scripts/entrypoint.sh /entrypoint.sh
 
 RUN groupadd -r hive --gid=1000 && \
     useradd -r -g hive --uid=1000 -d ${HIVE_HOME} hive && \
     chown hive:hive -R ${HIVE_HOME} && \
     chown hive:hive /entrypoint.sh && chmod +x /entrypoint.sh
+
+RUN rm ${HIVE_HOME}/conf/metastore-site.xml
 
 USER hive
 EXPOSE 9083
