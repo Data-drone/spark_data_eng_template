@@ -135,7 +135,8 @@ services:
     ports:
       - "9494:8888"
     volumes:
-      - ./dev_notebooks:/home/jovyan/work/dev_notebooks 
+      - ./dev_notebooks:/home/jovyan/work/dev_notebooks
+      - ../projects:/home/jovyan/work/projects
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       JAVA_HOME: /usr
