@@ -131,6 +131,8 @@ services:
       - ml_platform
 
   spark-notebook:
+    build:
+      context: ./spark_notebook
     image: datadrone/spark_notebook:3.1.1-hadoop3.2
     ports:
       - "9494:8888"
@@ -145,7 +147,14 @@ services:
       PYSPARK_DRIVER_PYTHON: /usr/bin/python3
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-    ipc: host  
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0', '1']
+            capabilities: [gpu, utility, compute]
     links:
         - hive_metastore
     networks:

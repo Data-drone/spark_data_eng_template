@@ -91,17 +91,19 @@ ENV RAPIDS_VERSION=21.08.0
 ENV CUDF_VERSION=21.08.2
 
 RUN mkdir /opt/sparkRapidsPlugin
-RUN wget -O /opt/sparkRapidsPlugin/rapids-4-spark_2.12-{RAPIDS_VERSION}.jar https://repo1.maven.org/maven2/com/nvidia/rapids-4-spark_2.12/{RAPIDS_VERSION}/rapids-4-spark_2.12-{RAPIDS_VERSION}.jar
-RUN wget -O /opt/sparkRapidsPlugin/cudf-{CUDF_VERSION}-cuda11.jar https://repo1.maven.org/maven2/ai/rapids/cudf/{CUDF_VERSION}/cudf-{CUDF_VERSION}-cuda11.jar
+RUN wget -O /opt/sparkRapidsPlugin/rapids-4-spark_2.12-${RAPIDS_VERSION}.jar https://repo1.maven.org/maven2/com/nvidia/rapids-4-spark_2.12/${RAPIDS_VERSION}/rapids-4-spark_2.12-${RAPIDS_VERSION}.jar
+RUN wget -O /opt/sparkRapidsPlugin/cudf-${CUDF_VERSION}-cuda11.jar https://repo1.maven.org/maven2/ai/rapids/cudf/${CUDF_VERSION}/cudf-${CUDF_VERSION}-cuda11.jar
 RUN wget -O /opt/sparkRapidsPlugin/getGpusResources.sh https://raw.githubusercontent.com/apache/spark/master/examples/src/main/scripts/getGpusResources.sh
 
 RUN chmod u+x /opt/sparkRapidsPlugin/getGpusResources.sh \
-      && chmod u+x /opt/sparkRapidsPlugin/rapids-4-spark_2.12-{RAPIDS_VERSION}.jar \
-      && chmod u+x /opt/sparkRapidsPlugin/cudf-{CUDF_VERSION}-cuda11.jar
+      && chmod u+x /opt/sparkRapidsPlugin/rapids-4-spark_2.12-${RAPIDS_VERSION}.jar \
+      && chmod u+x /opt/sparkRapidsPlugin/cudf-${CUDF_VERSION}-cuda11.jar
 
 RUN chown jovyan:1000 /opt/sparkRapidsPlugin/getGpusResources.sh \
-      && chown jovyan:1000 /opt/sparkRapidsPlugin/rapids-4-spark_2.12-{RAPIDS_VERSION}.jar \
-      && chown jovyan:1000 /opt/sparkRapidsPlugin/cudf-{CUDF_VERSION}-cuda11.jar
+      && chown jovyan:1000 /opt/sparkRapidsPlugin/rapids-4-spark_2.12-${RAPIDS_VERSION}.jar \
+      && chown jovyan:1000 /opt/sparkRapidsPlugin/cudf-${CUDF_VERSION}-cuda11.jar
+
+RUN chown jovyan:1000 -R /home/jovyan
 
 USER $NB_USER
 
