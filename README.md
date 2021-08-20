@@ -5,6 +5,10 @@ Copy of the `.env.template`, rename to .env and change parameters as required
 
 ## TODO
 
+- refactor to clean up the images:
+  - Base images are from https://github.com/Data-drone/docker-spark.git on the 3.1.1-hadoop3.2-rapids branch
+  - Currently moving the Notebook build to this project.
+
 - Still need to work out why we need to define the ipaddress for HiveMetastore
 - Look into users and permissions
   -- We created a database/schema using jovyan user a table was then written into it using root user. After that was not able to access the table
