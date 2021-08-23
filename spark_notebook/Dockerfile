@@ -41,12 +41,12 @@ ENV PYTHONHASHSEED 1
 ## Need to add a conda env flag
 # copy over the computer vision one
 #
-RUN conda create --name spark --clone computer_vision
+#RUN conda create --name spark --clone computer_vision
 #python=3.8 pyspark==3.1.1 conda-pack
 
-SHELL ["conda", "run", "-n", "spark", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "computer_vision", "/bin/bash", "-c"]
 
-RUN conda install -n spark -c conda-forge -y pyspark==3.1.1 conda-pack 
+RUN conda install -n computer_vision -c conda-forge -y pyspark==3.1.1 conda-pack 
 
 # this isn't installing in the right folder
 #RUN pip install pyspark==3.1.1 conda-pack
@@ -58,11 +58,11 @@ RUN conda config --set channel_priority false
 
 ## from jupyter stacks
 # Install pyarrow
-RUN conda install --quiet -y 'pyarrow' -c conda-forge && \
+RUN conda install -n computer_vision --quiet -y 'pyarrow' -c conda-forge && \
     conda clean --all -f -y
 
 # R packages
-RUN conda install --quiet --yes -c conda-forge \
+RUN conda install -n computer_vision --quiet --yes -c conda-forge \
     'r-base' \
     'r-ggplot2' \
     'r-irkernel' \
@@ -81,7 +81,7 @@ RUN conda install --quiet --yes -c conda-forge \
 #    rm -rf "/home/${NB_USER}/.local"
 
 # Spylon-kernel
-RUN conda install --quiet --yes 'spylon-kernel=0.4*' -c conda-forge && \
+RUN conda install -n computer_vision --quiet --yes 'spylon-kernel=0.4*' -c conda-forge && \
     conda clean --all -f -y && \
     python -m spylon_kernel install --sys-prefix && \
     rm -rf "/home/${NB_USER}/.local"
