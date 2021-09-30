@@ -1,4 +1,4 @@
-FROM datadrone/spark-submit:3.1.1-hadoop3.2-rapids
+FROM datadrone/spark-submit:3.1.2-hadoop3.2-rapids
 
 COPY entrypoint.sh /entrypoint.sh
 

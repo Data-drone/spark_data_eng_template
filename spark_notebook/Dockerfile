@@ -1,4 +1,4 @@
-FROM datadrone/deeplearn_mxnet:cuda-11.1
+FROM datadrone/deeplearn_pytorch:cuda-11.1-runtime
 
 USER root
 
@@ -7,7 +7,7 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/*
 
 # setup scala
-ENV SPARK_VERSION=3.1.1
+ENV SPARK_VERSION=3.1.2
 ENV HADOOP_VERSION=3.2
 ENV SCALA_VERSION=2.12.13
 ENV SBT_VERSION=1.5.1
@@ -46,7 +46,7 @@ ENV PYTHONHASHSEED 1
 
 SHELL ["conda", "run", "-n", "computer_vision", "/bin/bash", "-c"]
 
-RUN conda install -n computer_vision -c conda-forge -y pyspark==3.1.1 conda-pack 
+RUN conda install -n computer_vision -c conda-forge -y pyspark==3.1.2 conda-pack 
 
 # this isn't installing in the right folder
 #RUN pip install pyspark==3.1.1 conda-pack
